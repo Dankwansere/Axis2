@@ -1,0 +1,20 @@
+<p>
+  Please log in
+</p>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <mat-form-field >
+    <input matInput placeholder="Username" formControlName="userName" required>
+  </mat-form-field>
+<br/>
+  <mat-form-field >
+    <input type="password" matInput placeholder="password" formControlName="passWord" required>
+  </mat-form-field>
+  <br/>
+<button mat-flat-button color="primary">login</button>
+</form>
+<button mat-flat-button color="warn" (click)="closeDialog()" >cancel</button>
+<div>
+  <p class="error">{{errorMessage}}</p>
+</div>
+
+
