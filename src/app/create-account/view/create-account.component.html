@@ -1,0 +1,12 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <ng-template matStepLabel>Fill out your name</ng-template>
+    <p>test 1</p>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <p>test 2</p>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup">
+    <p>test 3</p>
+  </mat-step>
+</mat-horizontal-stepper>
