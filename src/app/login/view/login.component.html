@@ -1,6 +1,12 @@
 <p>
   Please log in
 </p>
+
+<div *ngIf="isLoading else loginTemplate">
+  <app-spinner></app-spinner>
+</div>
+
+<ng-template #loginTemplate>
 <form [formGroup]="loginForm" (ngSubmit)="login()">
   <mat-form-field >
     <input matInput placeholder="Username" formControlName="userName" required>
@@ -17,5 +23,6 @@
 <div>
   <p class="error">{{errorMessage}}</p>
 </div>
+</ng-template>
 
 
