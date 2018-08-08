@@ -4,6 +4,8 @@ import {routing} from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
 // feature modules
 import {LoginModule} from './login/login.module';
+import {CreateAccountModule} from './create-account/create-account.module';
+
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -17,7 +19,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     HomeComponent
   ],
   imports: [
-    BrowserModule,  BrowserAnimationsModule, MatDialogModule, LoginModule, routing, HttpClientModule
+    BrowserModule,  BrowserAnimationsModule, MatDialogModule,
+     LoginModule, CreateAccountModule, routing, HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
