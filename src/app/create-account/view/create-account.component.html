@@ -1,12 +1,57 @@
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
-    <ng-template matStepLabel>Fill out your name</ng-template>
-    <p>test 1</p>
+    <ng-template matStepLabel>Basic Info</ng-template>
+    
+    <form>
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Username" >
+        </mat-form-field>
+
+        <mat-form-field class="form-input">
+            <input type="email" matInput placeholder="Email" >
+        </mat-form-field>
+        <br>
+        <mat-form-field class="form-input">
+            <input matInput placeholder="First name" >
+        </mat-form-field>
+
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Middle name" >
+        </mat-form-field>
+
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Last name" >
+        </mat-form-field>
+
+        <br>
+        <mat-form-field class="form-input">
+            <input matInput placeholder="City" >
+        </mat-form-field>
+
+        <mat-form-field class="form-input">
+          <mat-select placeholder="Province">
+              <mat-option *ngFor="let provice of provinces" [value]="provice.value">
+                {{provice.viewValue}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Postal Code" >
+        </mat-form-field>
+        <br>
+        <button type="button" mat-button matStepperNext>Next</button>
+    </form>
+     
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
+      <ng-template matStepLabel>Employee Info</ng-template>
+      <button type="button" (click)="goBack(stepper)">Back</button>
     <p>test 2</p>
   </mat-step>
+
   <mat-step [stepControl]="thirdFormGroup">
-    <p>test 3</p>
+      <ng-template matStepLabel>Set Password</ng-template>
+   <app-password></app-password>
   </mat-step>
 </mat-horizontal-stepper>
