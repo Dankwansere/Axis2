@@ -2,34 +2,35 @@
   <mat-step [stepControl]="firstFormGroup">
     <ng-template matStepLabel>Basic Info</ng-template>
     
-    <form>
+    <form [formGroup]="basicInfoForm">
         <mat-form-field class="form-input">
-            <input matInput placeholder="Username" >
+            <input matInput placeholder="Username" formControlName="username" (blur)="validateUsername()">
         </mat-form-field>
+        
 
         <mat-form-field class="form-input">
-            <input type="email" matInput placeholder="Email" >
+            <input type="email" matInput placeholder="Email" formControlName="email" >
         </mat-form-field>
         <br>
         <mat-form-field class="form-input">
-            <input matInput placeholder="First name" >
+            <input matInput placeholder="First name" formControlName="firstname" >
         </mat-form-field>
 
         <mat-form-field class="form-input">
-            <input matInput placeholder="Middle name" >
+            <input matInput placeholder="Middle name" formControlName="middlename" >
         </mat-form-field>
 
         <mat-form-field class="form-input">
-            <input matInput placeholder="Last name" >
+            <input matInput placeholder="Last name" formControlName="lastname" >
         </mat-form-field>
 
         <br>
         <mat-form-field class="form-input">
-            <input matInput placeholder="City" >
+            <input matInput placeholder="City" formControlName="city">
         </mat-form-field>
 
         <mat-form-field class="form-input">
-          <mat-select placeholder="Province">
+          <mat-select placeholder="Province" formControlName="province">
               <mat-option *ngFor="let provice of provinces" [value]="provice.value">
                 {{provice.viewValue}}
               </mat-option>
@@ -37,10 +38,11 @@
       </mat-form-field>
 
         <mat-form-field class="form-input">
-            <input matInput placeholder="Postal Code" >
+            <input matInput placeholder="Postal Code"  formControlName="postalcode">
         </mat-form-field>
         <br>
-        <button type="button" mat-button matStepperNext>Next</button>
+        <p class="error">{{errorMessage}}</p>
+        <button type="button" mat-button matStepperNext color="primary" [disabled]="basicInfoForm.invalid || !isUsernameValid" style="float: right;">Next</button>
     </form>
      
   </mat-step>
