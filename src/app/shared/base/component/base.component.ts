@@ -8,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class BaseComponent implements OnInit {
 
   protected isLoading: boolean;
+  protected errorMessage;
   constructor() { }
 
   ngOnInit() {
   }
+
+  protected clearErrorMessage(): void {
+    this.errorMessage = '';
+  }
+
 
 }
