@@ -16,7 +16,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
 
   private loginForm: FormGroup;
-  private errorMessage;
 
   constructor(private fb: FormBuilder, private router: Router,
      private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService) { 
