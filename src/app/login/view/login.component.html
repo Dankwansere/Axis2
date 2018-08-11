@@ -9,11 +9,11 @@
 <ng-template #loginTemplate>
 <form [formGroup]="loginForm" (ngSubmit)="login()">
   <mat-form-field >
-    <input matInput placeholder="Username" formControlName="userName" required>
+    <input matInput placeholder="Username" formControlName="username" required>
   </mat-form-field>
 <br/>
   <mat-form-field >
-    <input type="password" matInput placeholder="password" formControlName="passWord" required>
+    <input type="password" matInput placeholder="password" formControlName="password" required>
   </mat-form-field>
   <br/>
 <button mat-flat-button color="primary">login</button>
