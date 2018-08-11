@@ -18,14 +18,14 @@ export class LoginComponent extends BaseComponent implements OnInit {
   private loginForm: FormGroup;
 
   constructor(private fb: FormBuilder, private router: Router,
-     private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService) { 
+     private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService) {
        super();
      }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
-      userName: ['', Validators.required],
-      passWord: ['', Validators.required]
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
