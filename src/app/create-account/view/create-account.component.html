@@ -48,14 +48,50 @@
     </form>
      
   </mat-step>
+
   <mat-step [stepControl]="employeeForm">
       <ng-template matStepLabel>Employee Info</ng-template>
-      <button type="button" (click)="goBack(stepper)">Back</button>
-    <p>test 2</p>
+
+      <form [formGroup]="employeeForm">
+        <mat-form-field class="form-input" >
+            <input matInput placeholder="Employee ID"  formControlName="employeeID" >
+        </mat-form-field>
+        <img *ngIf="spinnerType.usernameSpinner" class="spinner-text" src="assets/images/miniSpinner.gif">
+
+        <mat-form-field class="form-input">
+            <input  matInput placeholder="Company Name" formControlName="companyName"  >
+        </mat-form-field>
+        <img *ngIf="spinnerType.emailSpinner" class="spinner-text" src="assets/images/miniSpinner.gif">
+        <br>
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Title" formControlName="title" >
+        </mat-form-field>
+
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Start date" formControlName="startDate" >
+        </mat-form-field>
+
+        <br>
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Work Phone" formControlName="workPhone" >
+        </mat-form-field>
+
+       
+        <mat-form-field class="form-input">
+            <input matInput placeholder="Mobile Phone" formControlName="mobilePhone">
+        </mat-form-field>
+
+
+        <p class="error">{{errorMessage}}</p>
+        <button type="button" mat-button matStepperNext color="primary" [disabled]="basicInfoForm.invalid || !isUsernameValid || !isEmailValid" style="float: right;">Next</button>
+        <button type="button"  mat-button color="primary" (click)="clearForm()"  style="float: left;">Clear</button>
+         <button type="button" mat-button color="primary" (click)="goBack(stepper)">Back</button>
+    </form>
   </mat-step>
 
   <mat-step [stepControl]="thirdFormGroup">
       <ng-template matStepLabel>Set Password</ng-template>
    <app-password></app-password>
+   <button type="button" mat-button color="primary" (click)="goBack(stepper)">Back</button>
   </mat-step>
 </mat-horizontal-stepper>
