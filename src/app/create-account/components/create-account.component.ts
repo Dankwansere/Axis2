@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonServices } from '../../shared/services/common.service';
 import { BaseComponent } from '../../shared/base/component/base.component';
 import { ErrorMessage } from '../../commons/error-message';
+import {PasswordComponent} from '../../shared/password/components/password.component';
 
 @Component({
   selector: 'app-create-account',
@@ -19,6 +20,8 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   private isUsernameValid: boolean;
   private isEmailValid: boolean;
   private spinnerType;
+
+  @ViewChild(PasswordComponent) passwordComponent: PasswordComponent;
 
   constructor(private fb: FormBuilder, private commonService: CommonServices) {
     super();
@@ -45,7 +48,12 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     });
 
     this.employeeForm = this.fb.group({
-      employeeID: ['']
+      employeeID: [''],
+      companyName: [''],
+      title: [''],
+      startDate: [''],
+      workPhone: [''],
+      mobilePhone: ['']
     });
    }
 
@@ -130,6 +138,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     this.validateForm.get('value').setValue(value);
   }
 
+ 
   private loadListOfProvinces() {
 
     this.provinces = [
