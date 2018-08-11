@@ -8,7 +8,7 @@ export const environment = {
 
   login: 'user/login',
   register: 'user/create',
-  validateUsername: 'user/validate/',
+  validateSingleInfo: 'user/validate',
 
   projectList: 'timesheet/user/timesheet',
   submitTimesheet: 'timesheet/submitTimesheetForm'
