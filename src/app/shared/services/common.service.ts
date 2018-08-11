@@ -7,8 +7,8 @@ export class CommonServices {
 
     constructor(private baseService: BaseService) {}
 
-    public validateUsername(username: string) {
-        return this.baseService.getRequest(environment.baseUrl + environment.validateUsername + username);
+    public validateSingleInfo(body) {
+        return this.baseService.postRequest(environment.baseUrl + environment.validateSingleInfo, body);
     }
 
 }
