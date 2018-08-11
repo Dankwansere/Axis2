@@ -14,20 +14,38 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
 
   private provinces;
   private basicInfoForm: FormGroup;
+  private employeeForm: FormGroup;
+  private validateForm: FormGroup;
   private isUsernameValid: boolean;
+  private isEmailValid: boolean;
+  private spinnerType;
 
   constructor(private fb: FormBuilder, private commonService: CommonServices) {
     super();
+
+    this.spinnerType = {
+      usernameSpinner: false,
+      emailSpinner: false
+    };
+
+    this.validateForm = this.fb.group({
+      value: [''],
+      validatorType: ['']
+    });
+
     this.basicInfoForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       firstname: ['' , Validators.required],
       middlename: [''],
       lastname: ['', Validators.required],
       city: ['', Validators.required],
       province: ['', Validators.required],
       postalcode: ['', Validators.required]
+    });
 
+    this.employeeForm = this.fb.group({
+      employeeID: ['']
     });
    }
 
@@ -39,18 +57,77 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     stepper.previous();
   }
 
-  private validateUsername() {
-    this.commonService.validateUsername(this.basicInfoForm.get('username').value).subscribe((resp: any) => {
+  private validateInfo(validateType: number) {
+
+    switch (validateType) {
+      case 0:
+        this.setValidatorForm(validateType, this.basicInfoForm.get('username').value);
+        this.spinnerType.usernameSpinner = true;
+        break;
+
+      case 1:
+        this.setValidatorForm(validateType, this.basicInfoForm.get('email').value);
+          this.spinnerType.emailSpinner = true;
+        break;
+    }
+
+    this.commonService.validateSingleInfo(this.validateForm.value).subscribe((resp: any) => {
       if (resp.status === 'Valid') {
-        if (resp.data.isUsernameExist) {
-          this.isUsernameValid = false;
-          this.errorMessage = ErrorMessage.USERNAME_TAKEN;
-        } else if (!resp.data.isUsernameExist) {
-          this.isUsernameValid = true;
+        if (resp.data.isInfoExist) {
+          this.clearTextfieldUiSpinner(validateType);
+          this.setErrorMessageType(validateType);
+        } else if (!resp.data.isInfoExist) {
+          this.clearTextfieldUiSpinner(validateType);
+          this.setFieldValidation(validateType);
           this.clearErrorMessage();
         }
+      } else {
+        this.clearTextfieldUiSpinner(validateType);
       }
     });
+  }
+
+  private clearForm() {
+    this.basicInfoForm.reset();
+    this.errorMessage = '';
+  }
+
+  private setFieldValidation(validateType: number) {
+    switch (validateType) {
+      case 0:
+        this.isUsernameValid = true;
+        break;
+
+      case 1:
+        this.isEmailValid = true;
+        break;
+    }
+  }
+  private setErrorMessageType(fieldErrorType: number) {
+    switch (fieldErrorType) {
+      case 0:
+        this.isUsernameValid = false;
+        this.errorMessage = ErrorMessage.USERNAME_TAKEN;
+        break;
+
+      case 1:
+        this.isEmailValid = false;
+        this.errorMessage = ErrorMessage.EMAIL_TAKEN;
+        break;
+    }
+  }
+
+  private clearTextfieldUiSpinner(spinnerType: number) {
+    if (spinnerType === 0) {
+      this.spinnerType.usernameSpinner = false;
+    } else if (spinnerType === 1) {
+      this.spinnerType.emailSpinner = false;
+    }
+  }
+
+  private setValidatorForm(formType: number, value: string) {
+    this.validateForm.get('validatorType').setValue(formType);
+    this.validateForm.get('value').setValue(value);
   }
 
   private loadListOfProvinces() {
