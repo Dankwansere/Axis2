@@ -4,6 +4,7 @@ import { LoginService } from '../services/login.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {ErrorMessage} from '../../commons/error-message';
 
 @Component({
   selector: 'app-login',
@@ -31,9 +32,11 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
         console.log('Response: ', resp);
-        if (resp.status === 'valid') {
+        if (resp.status === 'Valid') {
           this.dialogRef.close();
           this.router.navigate(['home']);
+        } else if (resp.status === 'Invalid') {
+          this.errorMessage = ErrorMessage.INVALID_LOGIN;
         }
       });
 

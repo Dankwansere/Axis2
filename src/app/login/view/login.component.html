@@ -11,8 +11,9 @@
   </mat-form-field>
   <br/>
 <button mat-flat-button color="primary">login</button>
+<button type="button" mat-flat-button color="warn" (click)="closeDialog()" >cancel</button>
 </form>
-<button mat-flat-button color="warn" (click)="closeDialog()" >cancel</button>
+
 <div>
   <p class="error">{{errorMessage}}</p>
 </div>
