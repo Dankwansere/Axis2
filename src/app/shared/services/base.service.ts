@@ -22,7 +22,6 @@ export class BaseService {
 
     public getRequest(url: string, param?: HttpParams) {
         this.httpOptions.params = param;
-        console.log(this.httpOptions);
         try {
             if (param) {
             //    return this.http.get(url,).pipe(
@@ -34,7 +33,6 @@ export class BaseService {
             );
             }
         } catch (error) {
-            console.log('Error in base get request: ', error);
         }
     }
 
