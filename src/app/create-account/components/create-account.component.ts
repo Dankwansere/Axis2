@@ -20,6 +20,8 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   private isUsernameValid: boolean;
   private isEmailValid: boolean;
   private spinnerType;
+  private gender;
+
 
   @ViewChild(PasswordComponent) passwordComponent: PasswordComponent;
 
@@ -35,16 +37,20 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
       value: [''],
       validatorType: ['']
     });
+   }
 
+  ngOnInit() {
     this.basicInfoForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      gender: ['', Validators.required],
       firstname: ['' , Validators.required],
       middlename: [''],
       lastname: ['', Validators.required],
       city: ['', Validators.required],
       province: ['', Validators.required],
-      postalcode: ['', Validators.required]
+      postalcode: ['', Validators.required],
+      password: []
     });
 
     this.employeeForm = this.fb.group({
@@ -55,17 +61,45 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
       workPhone: [''],
       mobilePhone: ['']
     });
-   }
 
-  ngOnInit() {
+    this.gender = [
+      {value: 'F', viewValue: 'Female'},
+      {value: 'M', viewValue: 'Male'}
+
+    ];
+
+
     this.loadListOfProvinces();
   }
+
 
   private goBack(stepper: MatStepper) {
     stepper.previous();
   }
 
-  private validateInfo(validateType: number) {
+  /**
+   * Submits form to server
+   */
+  private submit(): void {
+    const isPasswordValid = this.passwordComponent.validatePasswords();
+    const passwordVal = this.passwordComponent.getPasswordFieldVal();
+
+    if (!isPasswordValid) {
+      this.errorMessage = ErrorMessage.PASSWORD_DO_NOT_MATCH;
+    } else if (isPasswordValid) {
+      this.clearErrorMessage();
+      this.basicInfoForm.get('password').setValue(passwordVal);
+    } else {
+      this.errorMessage = ErrorMessage.UNEXPECTED_ERROR;
+    }
+
+  }
+
+  /**
+   * sends info to server to validate
+   * @param validateType type of validation 1 = validate username, 2 =  validate email
+   */
+  private validateInfo(validateType: number): void {
 
     switch (validateType) {
       case 0:
@@ -95,12 +129,10 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private clearForm() {
-    this.basicInfoForm.reset();
-    this.errorMessage = '';
-  }
-
-  private setFieldValidation(validateType: number) {
+  /**
+   * @param validateType validator type
+   */
+  private setFieldValidation(validateType: number): void {
     switch (validateType) {
       case 0:
         this.isUsernameValid = true;
@@ -111,7 +143,12 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
         break;
     }
   }
-  private setErrorMessageType(fieldErrorType: number) {
+
+  /**
+   * Sets error message
+   * @param fieldErrorType Error type message to display 1 = username error, 2 = email error
+   */
+  private setErrorMessageType(fieldErrorType: number): void {
     switch (fieldErrorType) {
       case 0:
         this.isUsernameValid = false;
@@ -125,7 +162,20 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     }
   }
 
-  private clearTextfieldUiSpinner(spinnerType: number) {
+  /**
+   * clears and reset form and error message
+   * @param form form to clear/reset
+   */
+  private clearForm(form: FormGroup): void {
+    form.reset();
+    this.errorMessage = '';
+  }
+
+  /**
+   * removes spinner from UI
+   * @param spinnerType refernce spinner
+   */
+  private clearTextfieldUiSpinner(spinnerType: number): void {
     if (spinnerType === 0) {
       this.spinnerType.usernameSpinner = false;
     } else if (spinnerType === 1) {
@@ -133,13 +183,17 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     }
   }
 
-  private setValidatorForm(formType: number, value: string) {
+  /**
+   * Initializes validation form
+   * @param formType type of validation 1 = validate username, 2 =  validate email
+   * @param value value to be validated
+   */
+  private setValidatorForm(formType: number, value: string): void {
     this.validateForm.get('validatorType').setValue(formType);
     this.validateForm.get('value').setValue(value);
   }
 
- 
-  private loadListOfProvinces() {
+  private loadListOfProvinces(): void {
 
     this.provinces = [
       {value: 'AB', viewValue: 'Alberta'},
