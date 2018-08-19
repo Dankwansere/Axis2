@@ -13,7 +13,6 @@ export class LoginService {
     constructor(private baseService: BaseService) {}
 
     public login(body) {
-        console.log(environment.baseUrl + environment.login);
         return this.baseService.postRequest(environment.baseUrl + environment.login, body);
     }
 }
