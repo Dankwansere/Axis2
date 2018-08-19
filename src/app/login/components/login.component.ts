@@ -35,7 +35,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.isLoading = true;
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
-        console.log('Response: ', resp);
         if (resp.status === 'Valid') {
           this.isLoading = false;
           this.dialogRef.close();
@@ -49,7 +48,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     } else if (this.loginForm.invalid) {
       this.isLoading = false;
-      console.log('invalid form');
       this.errorMessage = 'All fields required!';
     }
   }
