@@ -17,7 +17,6 @@ export class SessionStorage {
     }
 
     /**
-     * 
      * @param key A DOMString contaning the name of the key you want to be returned
      */
     static returnDataFromSession(key: string) {

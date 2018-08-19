@@ -59,7 +59,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * 
    * @param res Response(User) Object returned from server
    */
   private setUserInSession(res: any) {
