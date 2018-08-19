@@ -6,6 +6,8 @@ import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ErrorMessage} from '../../commons/error-message';
 import { BaseComponent } from '../../shared/base/component/base.component';
+import { SessionStorage } from '../../shared/security/session-storage';
+import { Constants } from '../../commons/constants';
 
 @Component({
   selector: 'app-login',
@@ -37,6 +39,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         if (resp.status === 'Valid') {
           this.isLoading = false;
           this.dialogRef.close();
+          this.setUserInSession(resp);
           this.router.navigate(['home']);
         } else if (resp.status === 'Invalid') {
           this.isLoading = false;
@@ -53,6 +56,14 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  /**
+   * 
+   * @param res Response(User) Object returned from server
+   */
+  private setUserInSession(res: any) {
+    SessionStorage.setDataInSession(Constants.USER_SESSION_KEY, JSON.stringify(res));
   }
 
 }
