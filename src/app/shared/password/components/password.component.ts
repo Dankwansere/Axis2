@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Utility } from '../../../commons/utility';
 
 @Component({
   selector: 'app-password',
@@ -9,7 +10,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 export class PasswordComponent implements OnInit {
 
   private isUpdateMode: boolean;
-  private passwordForm: FormGroup;
+  passwordForm: FormGroup;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -21,6 +22,15 @@ export class PasswordComponent implements OnInit {
     if (this.isUpdateMode) {
       this.passwordForm.addControl('currentPassword', new FormControl('', Validators.required));
     }
-
   }
+
+  validatePasswords() {
+     return Utility.compareTwoStrings(this.passwordForm.get('password').value, this.passwordForm.get('confirmPassword').value);
+  }
+
+  getPasswordFieldVal() {
+    return this.passwordForm.get('password').value;
+  }
+
+
 }
