@@ -2,7 +2,7 @@
   <mat-step [stepControl]="basicInfoForm">
     <ng-template matStepLabel>Basic Info</ng-template>
     
-    <form [formGroup]="basicInfoForm">
+    <form [formGroup]="basicInfoForm" #basicForm>
         <mat-form-field class="form-input" >
             <input matInput placeholder="Username"  formControlName="username" (blur)="validateInfo(0)">
         </mat-form-field>
@@ -12,6 +12,15 @@
             <input type="email" matInput placeholder="Email" formControlName="email" (blur)="validateInfo(1)" >
         </mat-form-field>
         <img *ngIf="spinnerType.emailSpinner" class="spinner-text" src="assets/images/miniSpinner.gif">
+
+        <mat-form-field class="form-input">
+            <mat-select placeholder="Gender" formControlName="gender">
+                <mat-option *ngFor="let g of gender" [value]="g.value">
+                  {{g.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <br>
         <mat-form-field class="form-input">
             <input matInput placeholder="First name" formControlName="firstname" >
@@ -44,7 +53,7 @@
         <br>
         <p class="error">{{errorMessage}}</p>
         <button type="button" mat-button matStepperNext color="primary" [disabled]="basicInfoForm.invalid || !isUsernameValid || !isEmailValid" style="float: right;">Next</button>
-        <button type="button"  mat-button color="primary" (click)="clearForm()"  style="float: left;">Clear</button>
+        <button type="button"  mat-button color="primary" (click)="clearForm(basicForm)"  style="float: left;">Clear</button>
     </form>
      
   </mat-step>
@@ -52,7 +61,7 @@
   <mat-step [stepControl]="employeeForm">
       <ng-template matStepLabel>Employee Info</ng-template>
 
-      <form [formGroup]="employeeForm">
+      <form [formGroup]="employeeForm" #employee>
         <mat-form-field class="form-input" >
             <input matInput placeholder="Employee ID"  formControlName="employeeID" >
         </mat-form-field>
@@ -68,7 +77,10 @@
         </mat-form-field>
 
         <mat-form-field class="form-input">
-            <input matInput placeholder="Start date" formControlName="startDate" >
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            <!--<input matInput placeholder="Start date" formControlName="startDate" > -->
         </mat-form-field>
 
         <br>
@@ -84,14 +96,16 @@
 
         <p class="error">{{errorMessage}}</p>
         <button type="button" mat-button matStepperNext color="primary" [disabled]="basicInfoForm.invalid || !isUsernameValid || !isEmailValid" style="float: right;">Next</button>
-        <button type="button"  mat-button color="primary" (click)="clearForm()"  style="float: left;">Clear</button>
-         <button type="button" mat-button color="primary" (click)="goBack(stepper)">Back</button>
+        <button type="button"  mat-button color="primary" (click)="clearForm(employee)"  style="float: left;">Clear</button>
+        <button type="button" mat-button color="primary" (click)="goBack(stepper)">Back</button>
     </form>
   </mat-step>
 
   <mat-step [stepControl]="thirdFormGroup">
       <ng-template matStepLabel>Set Password</ng-template>
    <app-password></app-password>
+   <p class="error">{{errorMessage}}</p>
    <button type="button" mat-button color="primary" (click)="goBack(stepper)">Back</button>
+   <button type="button" mat-button color="primary" (click)="submit()" style="float: right;">Submit</button>
   </mat-step>
 </mat-horizontal-stepper>
