@@ -5,6 +5,7 @@ import { CommonServices } from '../../shared/services/common.service';
 import { BaseComponent } from '../../shared/base/component/base.component';
 import { ErrorMessage } from '../../commons/error-message';
 import {PasswordComponent} from '../../shared/password/components/password.component';
+import { CreateAccountService } from '../create-account.service';
 
 @Component({
   selector: 'app-create-account',
@@ -25,18 +26,9 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
 
   @ViewChild(PasswordComponent) passwordComponent: PasswordComponent;
 
-  constructor(private fb: FormBuilder, private commonService: CommonServices) {
+  constructor(private fb: FormBuilder, private commonService: CommonServices,
+     private createAccountService: CreateAccountService) {
     super();
-
-    this.spinnerType = {
-      usernameSpinner: false,
-      emailSpinner: false
-    };
-
-    this.validateForm = this.fb.group({
-      value: [''],
-      validatorType: ['']
-    });
    }
 
   ngOnInit() {
@@ -68,6 +60,16 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
 
     ];
 
+    this.spinnerType = {
+      usernameSpinner: false,
+      emailSpinner: false
+    };
+
+    this.validateForm = this.fb.group({
+      value: [''],
+      validatorType: ['']
+    });
+
 
     this.loadListOfProvinces();
   }
@@ -89,6 +91,14 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     } else if (isPasswordValid) {
       this.clearErrorMessage();
       this.basicInfoForm.get('password').setValue(passwordVal);
+      this.basicInfoForm.addControl('employee', this.employeeForm);
+
+      console.log('Final form: ', this.basicInfoForm.value);
+
+      this.createAccountService.createUser(this.basicInfoForm.value).subscribe( (resp: any) => {
+        console.log('resp: ', resp);
+      } );
+
     } else {
       this.errorMessage = ErrorMessage.UNEXPECTED_ERROR;
     }
