@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 // ng material
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {MatDialogModule} from '@angular/material/dialog';
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MatDialogModule,
-     LoginModule, SharedModule, CreateAccountModule, routing, HttpClientModule
+     LoginModule, SharedModule, CreateAccountModule, HttpClientModule,
+     RouterModule.forRoot(routing, { enableTracing: false })
   ],
   providers: [],
   bootstrap: [AppComponent]
