@@ -13,6 +13,11 @@ export class LoginService {
     constructor(private baseService: BaseService) {}
 
     public login(body) {
-        return this.baseService.postRequest(environment.baseUrl + environment.login, body);
+
+        const httpOptions = {
+            observe: 'response'
+          };
+
+        return this.baseService.postRequest(environment.baseUrl + environment.login, body, httpOptions);
     }
 }
