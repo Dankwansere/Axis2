@@ -8,6 +8,10 @@ import {ErrorMessage} from '../../commons/error-message';
 import { BaseComponent } from '../../shared/base/component/base.component';
 import { SessionStorage } from '../../shared/security/session-storage';
 import { Constants } from '../../commons/constants';
+import { Store } from '@ngrx/store';
+import { ILogin } from '../../store/interface/login.interface';
+import * as LoginActions from '../../store/actions/login.action';
+
 
 @Component({
   selector: 'app-login',
@@ -20,6 +24,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
   private loginForm: FormGroup;
 
   constructor(private fb: FormBuilder, private router: Router,
+    private store: Store<{login: {
+      id,
+      namme
+    }}>,
      private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService) {
        super();
      }
@@ -33,14 +41,18 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   login() {
     this.isLoading = true;
+    this.store.select('login').subscribe((resp) => {
+    });
+
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
-        if (resp.status === 'Valid') {
+        if (resp.body.status === 'Valid') {
           this.isLoading = false;
           this.dialogRef.close();
-          this.setUserInSession(resp);
+          this.setUserInSession(resp.body.data);
+          SessionStorage.setDataInSession('authorization', resp.headers.get('authorization'));
           this.router.navigate(['home']);
-        } else if (resp.status === 'Invalid') {
+        } else if (resp.body.status === 'Invalid') {
           this.isLoading = false;
           this.errorMessage = ErrorMessage.INVALID_LOGIN;
         }
@@ -54,6 +66,30 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+
+    const iLoginTest: ILogin = {
+      firstname: 'updated',
+      lastname: 'sarpong',
+      id: 2
+    };
+
+    this.store.dispatch(new LoginActions.AddLogin(iLoginTest));
+
+  }
+
+  updateRedux() {
+    const iLoginTest: ILogin = {
+      firstname: 'Alafia',
+      lastname: 'sarpong',
+      id: 2
+    };
+
+    const payload = {
+      index: 0,
+      data: iLoginTest
+    };
+
+    this.store.dispatch(new LoginActions.UpdateIngredient(payload));
   }
 
   /**

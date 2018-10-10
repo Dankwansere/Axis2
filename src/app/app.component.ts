@@ -32,7 +32,7 @@ export class AppComponent {
     const userObj = JSON.parse(SessionStorage.returnDataFromSession(Constants.USER_SESSION_KEY));
 
     if (userObj) {
-      this.userID = userObj.data.username;
+      this.userID = userObj.username;
       return true;
     } else {
       return false;
