@@ -124,8 +124,8 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
     }
 
     this.commonService.validateSingleInfo(this.validateForm.value).subscribe((resp: any) => {
-      if (resp.status === 'Valid') {
-        if (resp.data.isInfoExist) {
+      if (resp.body.status === 'Valid') {
+        if (resp.body.data.isInfoExist) {
           this.clearTextfieldUiSpinner(validateType);
           this.setErrorMessageType(validateType);
         } else if (!resp.data.isInfoExist) {
