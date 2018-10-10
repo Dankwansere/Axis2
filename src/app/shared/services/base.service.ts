@@ -36,7 +36,12 @@ export class BaseService {
         }
     }
 
-    public postRequest(url: string, body: any, optionalHeaders?: HttpHeaders) {
+    public postRequest(url: string, body: any, optionalHeaders?: any) {
+
+        if (optionalHeaders) {
+            this.httpOptions = {...optionalHeaders};
+        }
+
         return this.http.post(url, body, this.httpOptions).pipe(
             catchError(this.handleError)
         );
