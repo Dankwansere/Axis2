@@ -35,12 +35,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.isLoading = true;
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
-        if (resp.status === 'Valid') {
+        if (resp.body.status === 'Valid') {
           this.isLoading = false;
           this.dialogRef.close();
-          this.setUserInSession(resp);
+          this.setUserInSession(resp.body.data);
+          SessionStorage.setDataInSession('authorization', resp.headers.get('authorization'));
           this.router.navigate(['home']);
-        } else if (resp.status === 'Invalid') {
+        } else if (resp.body.status === 'Invalid') {
           this.isLoading = false;
           this.errorMessage = ErrorMessage.INVALID_LOGIN;
         }
