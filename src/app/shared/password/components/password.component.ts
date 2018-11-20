@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Utility } from '../../../commons/utility';
+import { Constants } from '../../../commons/constants';
 
 @Component({
   selector: 'app-password',
@@ -14,21 +15,25 @@ export class PasswordComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.passwordForm = this.fb.group({
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
-    });
+    this.initializePasswordForm();
 
     if (this.isUpdateMode) {
-      this.passwordForm.addControl('currentPassword', new FormControl('', Validators.required));
+      this.passwordForm.addControl('currentPassword', new FormControl(Constants.EMPTY, Validators.required));
     }
   }
 
-  validatePasswords() {
+  private initializePasswordForm() {
+    this.passwordForm = this.fb.group({
+      password: [Constants.EMPTY, Validators.required],
+      confirmPassword: [Constants.EMPTY, Validators.required]
+    });
+  }
+
+  comparePswdAndConfirmPswd(): boolean {
      return Utility.compareTwoStrings(this.passwordForm.get('password').value, this.passwordForm.get('confirmPassword').value);
   }
 
-  getPasswordFieldVal() {
+  getPasswordFieldVal(): string {
     return this.passwordForm.get('password').value;
   }
 

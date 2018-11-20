@@ -6,12 +6,13 @@ import {PasswordComponent} from './password/components/password.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatInputModule} from '@angular/material/input';
 import { BaseComponent } from './base/component/base.component';
+import { UserService } from './services/user.service';
 
 @NgModule ({
     declarations: [SpinnerComponent, PasswordComponent, BaseComponent],
     imports: [CommonModule, MatInputModule, ReactiveFormsModule, MatProgressSpinnerModule],
     exports: [SpinnerComponent, PasswordComponent],
-    providers: []
+    providers: [UserService]
 })
 export class SharedModule {
 }

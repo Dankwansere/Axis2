@@ -1,0 +1,10 @@
+
+<div *ngIf="isUserOnline(); else default">
+  <p >
+    Welcome {{getUserFullName()}}
+</p>
+</div>
+
+<ng-template #default>
+    <p>Welcome to axis</p>
+</ng-template>

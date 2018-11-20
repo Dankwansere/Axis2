@@ -11,7 +11,11 @@ export const environment = {
   validateSingleInfo: 'user/validate',
 
   projectList: 'timesheet/user/timesheet',
-  submitTimesheet: 'timesheet/submitTimesheetForm'
+  submitTimesheet: 'timesheet/submitTimesheetForm',
+
+  loggerDebug: 'log/debug',
+  loggerWarn: 'log/warning',
+  loggerError: 'log/error'
 
 };
 

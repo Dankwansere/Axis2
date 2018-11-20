@@ -7,7 +7,9 @@ import { Router } from '@angular/router';
 import {ErrorMessage} from '../../commons/error-message';
 import { BaseComponent } from '../../shared/base/component/base.component';
 import { SessionStorage } from '../../shared/security/session-storage';
-import { Constants } from '../../commons/constants';
+import { Constants, RoutingConstants, SessionConstants } from '../../commons/constants';
+import { LoggerService } from 'src/app/shared/services/logger.service';
+import { AxisLoginResponse } from '../../commons/Interface/response.interface';
 
 @Component({
   selector: 'app-login',
@@ -17,17 +19,24 @@ import { Constants } from '../../commons/constants';
 export class LoginComponent extends BaseComponent implements OnInit {
 
 
-  private loginForm: FormGroup;
+  private _loginForm: FormGroup;
+
 
   constructor(private fb: FormBuilder, private router: Router,
-     private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService) {
+     private dialogRef: MatDialogRef<LoginComponent>, private loginService: LoginService,
+     private logService: LoggerService) {
        super();
      }
 
   ngOnInit() {
+    this.intializeForm();
+
+  }
+
+  private intializeForm() {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: [Constants.EMPTY, Validators.required],
+      password: [Constants.EMPTY, Validators.required]
     });
   }
 
@@ -35,13 +44,15 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.isLoading = true;
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
-        if (resp.body.status === 'Valid') {
+        const response: AxisLoginResponse = resp.body;
+        if (response.status === Constants.VALID) {
           this.isLoading = false;
           this.dialogRef.close();
-          this.setUserInSession(resp.body.data);
-          SessionStorage.setDataInSession('authorization', resp.headers.get('authorization'));
-          this.router.navigate(['home']);
-        } else if (resp.body.status === 'Invalid') {
+          this.setUserInSession(response.data);
+          SessionStorage.setDataInSession(SessionConstants.AUTH, resp.headers.get(SessionConstants.AUTH));
+          this.router.navigate([RoutingConstants.HOME]);
+
+        } else if (response.status === Constants.INVALID) {
           this.isLoading = false;
           this.errorMessage = ErrorMessage.INVALID_LOGIN;
         }
@@ -49,7 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     } else if (this.loginForm.invalid) {
       this.isLoading = false;
-      this.errorMessage = 'All fields required!';
+      this.errorMessage = ErrorMessage.ALL_FIELDS_REQUIRED;
     }
   }
 
@@ -62,6 +73,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
    */
   private setUserInSession(res: any) {
     SessionStorage.setDataInSession(Constants.USER_SESSION_KEY, JSON.stringify(res));
+  }
+
+  public get loginForm(): FormGroup {
+    return this._loginForm;
+  }
+  public set loginForm(value: FormGroup) {
+    this._loginForm = value;
   }
 
 }

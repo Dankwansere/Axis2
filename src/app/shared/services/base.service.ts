@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError, map, tap } from 'rxjs/operators';
+import { LoggerService } from './logger.service';
 
 @Injectable()
 export class BaseService {
@@ -17,7 +18,7 @@ export class BaseService {
           })
     };
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private loggerService: LoggerService) {
     }
 
     public getRequest(url: string, param?: HttpParams) {
@@ -44,6 +45,7 @@ export class BaseService {
 
         return this.http.post(url, body, this.httpOptions).pipe(
             catchError(this.handleError)
+
         );
     }
 
@@ -51,7 +53,9 @@ export class BaseService {
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
           // A client-side or network error occurred. Handle it accordingly.
-          console.error('An error occurred:', error.error.message);
+          const errMsg = 'An error occurred:' + error.error.message;
+          console.error(errMsg);
+          this.loggerService.error(errMsg);
         } else {
           // The backend returned an unsuccessful response code.
           // The response body may contain clues as to what went wrong,
@@ -61,6 +65,6 @@ export class BaseService {
         }
         // return an observable with a user-facing error message
         return throwError(
-          'Something bad happened; please try again later.');
+            this.loggerService.error('Error in base service request'));
       }
 }

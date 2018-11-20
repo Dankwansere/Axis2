@@ -7,11 +7,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {LoginService} from './services/login.service';
 import {BaseService} from '../shared/services/base.service';
 import {SharedModule} from '../shared/shared.module';
+import { LoggerService } from '../shared/services/logger.service';
 @NgModule({
     declarations: [LoginComponent],
     imports: [ReactiveFormsModule, CommonModule, SharedModule, MatInputModule,  MatButtonModule],
     exports: [],
-    providers: [LoginService, BaseService]
+    providers: [LoginService, BaseService, LoggerService]
 })
 export class LoginModule {
 

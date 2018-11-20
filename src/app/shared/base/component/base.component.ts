@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants } from '../../../commons/constants';
 
 @Component({
   selector: 'app-base',
@@ -15,7 +16,7 @@ export class BaseComponent implements OnInit {
   }
 
   protected clearErrorMessage(): void {
-    this.errorMessage = '';
+    this.errorMessage = Constants.EMPTY;
   }
 
 
