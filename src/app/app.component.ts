@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {LoginComponent} from './login/components/login.component';
 import { SessionStorage } from './shared/security/session-storage';
 import { Constants } from './commons/constants';
@@ -37,5 +37,6 @@ export class AppComponent {
     } else {
       return false;
     }
+
   }
 }
