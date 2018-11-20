@@ -6,6 +6,8 @@ import { BaseComponent } from '../../shared/base/component/base.component';
 import { ErrorMessage } from '../../commons/error-message';
 import {PasswordComponent} from '../../shared/password/components/password.component';
 import { CreateAccountService } from '../create-account.service';
+import { LoggerService } from 'src/app/shared/services/logger.service';
+import { Constants, NumberConst } from 'src/app/commons/constants';
 
 @Component({
   selector: 'app-create-account',
@@ -27,76 +29,90 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   @ViewChild(PasswordComponent) passwordComponent: PasswordComponent;
 
   constructor(private fb: FormBuilder, private commonService: CommonServices,
-     private createAccountService: CreateAccountService) {
+     private createAccountService: CreateAccountService, private logService: LoggerService) {
     super();
    }
 
   ngOnInit() {
-    this.basicInfoForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      gender: ['', Validators.required],
-      firstname: ['' , Validators.required],
-      middlename: [''],
-      lastname: ['', Validators.required],
-      city: ['', Validators.required],
-      province: ['', Validators.required],
-      postalcode: ['', Validators.required],
-      password: []
-    });
+    this.initializeBasicInforForm();
 
-    this.employeeForm = this.fb.group({
-      employeeID: [''],
-      companyName: [''],
-      title: [''],
-      startDate: [''],
-      workPhone: [''],
-      mobilePhone: ['']
-    });
+    this.initializeEmployeeForm();
 
-    this.gender = [
-      {value: 'F', viewValue: 'Female'},
-      {value: 'M', viewValue: 'Male'}
+    this.initializeGenderList();
 
-    ];
+    this.setSpinnerProperties();
 
-    this.spinnerType = {
-      usernameSpinner: false,
-      emailSpinner: false
-    };
-
-    this.validateForm = this.fb.group({
-      value: [''],
-      validatorType: ['']
-    });
-
+    this.initializeValidateForm();
 
     this.loadListOfProvinces();
   }
 
 
+  private setSpinnerProperties() {
+    this.spinnerType = {
+      usernameSpinner: false,
+      emailSpinner: false
+    };
+  }
+
+  private initializeGenderList() {
+    this.gender = [
+      { value: 'F', viewValue: 'Female' },
+      { value: 'M', viewValue: 'Male' }
+    ];
+  }
+
+  private initializeValidateForm() {
+    this.validateForm = this.fb.group({
+      value: [Constants.EMPTY],
+      validatorType: [Constants.EMPTY]
+    });
+  }
+
+  private initializeEmployeeForm() {
+    this.employeeForm = this.fb.group({
+      employeeID: [Constants.EMPTY],
+      companyName: [Constants.EMPTY],
+      title: [Constants.EMPTY],
+      startDate: [Constants.EMPTY],
+      workPhone: [Constants.EMPTY],
+      mobilePhone: [Constants.EMPTY]
+    });
+  }
+
+  private initializeBasicInforForm() {
+    this.basicInfoForm = this.fb.group({
+      username: [Constants.EMPTY, Validators.required],
+      email: [Constants.EMPTY, [Validators.required, Validators.email]],
+      gender: [Constants.EMPTY, Validators.required],
+      firstname: [Constants.EMPTY, Validators.required],
+      middlename: [Constants.EMPTY],
+      lastname: [Constants.EMPTY, Validators.required],
+      city: [Constants.EMPTY, Validators.required],
+      province: [Constants.EMPTY, Validators.required],
+      postalcode: [Constants.EMPTY, Validators.required],
+      password: []
+    });
+  }
+
   private goBack(stepper: MatStepper) {
     stepper.previous();
   }
 
-  /**
-   * Submits form to server
-   */
+
   private submit(): void {
-    const isPasswordValid = this.passwordComponent.validatePasswords();
+    const isPasswordValid = this.passwordComponent.comparePswdAndConfirmPswd();
     const passwordVal = this.passwordComponent.getPasswordFieldVal();
 
     if (!isPasswordValid) {
       this.errorMessage = ErrorMessage.PASSWORD_DO_NOT_MATCH;
     } else if (isPasswordValid) {
       this.clearErrorMessage();
-      this.basicInfoForm.get('password').setValue(passwordVal);
+      this.basicInfoForm.get(Constants.PASSWORD).setValue(passwordVal);
       this.basicInfoForm.addControl('employee', this.employeeForm);
 
-      console.log('Final form: ', this.basicInfoForm.value);
 
-      this.createAccountService.createUser(this.basicInfoForm.value).subscribe( (resp: any) => {
-        console.log('resp: ', resp);
+      this.createAccountService.createUser(this.basicInfoForm.value).subscribe((resp: any) => {
       } );
 
     } else {
@@ -112,19 +128,19 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
   private validateInfo(validateType: number): void {
 
     switch (validateType) {
-      case 0:
-        this.setValidatorForm(validateType, this.basicInfoForm.get('username').value);
+      case NumberConst.ZER0:
+        this.setValidatorForm(validateType, this.basicInfoForm.get(Constants.USERNAME).value);
         this.spinnerType.usernameSpinner = true;
         break;
 
-      case 1:
-        this.setValidatorForm(validateType, this.basicInfoForm.get('email').value);
+      case NumberConst.ONE:
+        this.setValidatorForm(validateType, this.basicInfoForm.get(Constants.EMAIL).value);
           this.spinnerType.emailSpinner = true;
         break;
     }
 
     this.commonService.validateSingleInfo(this.validateForm.value).subscribe((resp: any) => {
-      if (resp.body.status === 'Valid') {
+      if (resp.body.status === Constants.VALID) {
         if (resp.body.data.isInfoExist) {
           this.clearTextfieldUiSpinner(validateType);
           this.setErrorMessageType(validateType);
@@ -144,11 +160,11 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
    */
   private setFieldValidation(validateType: number): void {
     switch (validateType) {
-      case 0:
+      case NumberConst.ZER0:
         this.isUsernameValid = true;
         break;
 
-      case 1:
+      case NumberConst.ONE:
         this.isEmailValid = true;
         break;
     }
@@ -178,7 +194,7 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
    */
   private clearForm(form: FormGroup): void {
     form.reset();
-    this.errorMessage = '';
+    this.errorMessage = Constants.EMPTY;
   }
 
   /**
