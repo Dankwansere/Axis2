@@ -1,6 +1,6 @@
 import {Route} from '@angular/router';
 import {LoginComponent} from './login/components/login.component';
-import {HomeComponent} from './home/home.component';
+import {HomeComponent} from './home/components/home.component';
 import { CreateAccountComponent } from './create-account/components/create-account.component';
 
 export const routing: Route[] = [
