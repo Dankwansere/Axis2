@@ -7,6 +7,7 @@ export const environment = {
   baseUrl: 'http://localhost:7070/axis/',
 
   login: 'user/login',
+  upload: 'user/upload',
   register: 'user/create',
   validateSingleInfo: 'user/validate',
 

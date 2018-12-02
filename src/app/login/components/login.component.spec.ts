@@ -4,7 +4,7 @@ import { LoginComponent } from './login.component';
 import { LoginService } from '../services/login.service';
 import { FormBuilder } from '@angular/forms';
 import { SessionStorage } from '../../shared/security/session-storage';
-import { SessionConstants } from '../../commons/constants';
+import { SessionConstants, RoutingConstants } from '../../commons/constants';
 import { SpinnerComponent } from 'src/app/shared/spinner/components/spinner.component';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,12 +16,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoggerService } from 'src/app/shared/services/logger.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UserService } from 'src/app/shared/services/user.service';
+import { Router } from '@angular/router';
 
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-
+  const dialogMock = {
+    close: () => { }
+};
 
 
   beforeEach(async(() => {
@@ -30,7 +33,7 @@ describe('LoginComponent', () => {
       imports: [MatInputModule, RouterTestingModule, BrowserAnimationsModule,
          MatDialogModule, HttpClientModule, ReactiveFormsModule, MatProgressSpinnerModule],
       providers: [LoginService, LoggerService, MatDialog, BaseService, UserService,
-        {provide: MatDialogRef, useValue: {}}]
+        {provide: MatDialogRef, useValue: dialogMock}]
     })
     .compileComponents();
   }));
@@ -45,18 +48,20 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('service should return a token', () => {
-    const fb = new FormBuilder();
-    const loginForm = fb.group({
-      username: ['Gege'],
-      password: ['Welcome1']
-    });
-    component.loginForm = loginForm;
-    component.login();
+  it('service should return a token', async(() => {
 
+    component.loginForm.get('username').setValue('Gege');
+    component.loginForm.get('password').setValue('Welcome1');
+
+    const router = TestBed.get(Router);
+    const spy = spyOn(router, 'navigate');
+
+
+    component.login();
+    //expect(spy).toHaveBeenCalledWith([RoutingConstants.HOME]);
     const authToken = SessionStorage.returnDataFromSession(SessionConstants.AUTH);
-    console.log('authToken: ', authToken);
+
     expect(authToken).not.toBeNull();
 
-  });
+  }));
 });

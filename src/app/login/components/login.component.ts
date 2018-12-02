@@ -51,7 +51,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.setUserInSession(response.data);
           SessionStorage.setDataInSession(SessionConstants.AUTH, resp.headers.get(SessionConstants.AUTH));
           this.router.navigate([RoutingConstants.HOME]);
-
         } else if (response.status === Constants.INVALID) {
           this.isLoading = false;
           this.errorMessage = ErrorMessage.INVALID_LOGIN;

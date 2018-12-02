@@ -17,9 +17,9 @@ import { Constants, NumberConst } from 'src/app/commons/constants';
 export class CreateAccountComponent extends BaseComponent implements OnInit {
 
   private provinces;
-  private basicInfoForm: FormGroup;
-  private employeeForm: FormGroup;
-  private validateForm: FormGroup;
+  private _basicInfoForm: FormGroup;
+  private _employeeForm: FormGroup;
+  private _validateForm: FormGroup;
   private isUsernameValid: boolean;
   private isEmailValid: boolean;
   private spinnerType;
@@ -236,6 +236,27 @@ export class CreateAccountComponent extends BaseComponent implements OnInit {
       {value: 'YK', viewValue: 'Yukon'}
     ];
 
+  }
+
+  public get basicInfoForm(): FormGroup {
+    return this._basicInfoForm;
+  }
+  public set basicInfoForm(value: FormGroup) {
+    this._basicInfoForm = value;
+  }
+
+  public get employeeForm(): FormGroup {
+    return this._employeeForm;
+  }
+  public set employeeForm(value: FormGroup) {
+    this._employeeForm = value;
+  }
+
+  public get validateForm(): FormGroup {
+    return this._validateForm;
+  }
+  public set validateForm(value: FormGroup) {
+    this._validateForm = value;
   }
 
 }

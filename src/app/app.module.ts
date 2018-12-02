@@ -16,16 +16,17 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { RequestInterceptor } from './shared/interceptor/request-interceptor';
+import { ProfileModule } from './profile/profile.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MatDialogModule,
-     LoginModule, SharedModule, CreateAccountModule, HttpClientModule,
+     LoginModule, ProfileModule, SharedModule, CreateAccountModule, HttpClientModule,
      RouterModule.forRoot(routing, { enableTracing: false })
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],
