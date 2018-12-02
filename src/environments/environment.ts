@@ -7,7 +7,7 @@ export const environment = {
   baseUrl: 'http://localhost:7070/axis/',
 
   login: 'user/login',
-  upload: 'user/upload',
+  upload: 'user/upload', // .NET service
   register: 'user/create',
   validateSingleInfo: 'user/validate',
 
