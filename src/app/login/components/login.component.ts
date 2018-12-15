@@ -40,7 +40,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     });
   }
 
-  login() {
+ private login() {
     this.isLoading = true;
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe((resp: any) => {
